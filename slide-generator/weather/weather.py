@@ -18,7 +18,7 @@ from PIL import Image
 from PIL import ImageDraw
 import cStringIO
 
-logo_file='/home/yoann/dev/weather/wrp.png'
+logo_file='/home/yoann/dev/ODR-tools/slide-generator/weather/wrp.png'
 output_directory='/tmp/'
 
 # Number of day to generate
@@ -107,5 +107,5 @@ for entry in data:
                 
                 del draw
                 
-                im.save("/tmp/%s-%s.png" % (entry['date'], map['name']))
+                im.save("/tmp/%s-%s.jpg" % (entry['date'], map['name']), optimize=True,quality=90)
 		
