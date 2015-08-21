@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Install ODR on a debian jessie
+# This script must be run as superuser
 
 #------------------------------------
 # /!\ You need to add deb-multimedia repository to have the lastest mplayer version with resampler functions running
@@ -14,15 +15,16 @@
 apt-get --force-yes -y install htop iftop vim net-tools sysstat mtr-tiny screen ca-certificates
 apt-get --force-yes -y install git automake build-essential
 
-apt-get --force-yes -y install libsodium-dev
+apt-get --force-yes -y install libsodium-dev libzmq3-dev libzmq3
 
-cd /usr/src/
-wget http://download.zeromq.org/zeromq-4.0.4.tar.gz
-tar zxvf zeromq-4.0.4.tar.gz
-cd zeromq-4.0.4
-./configure --enable-shared
-make
-make install
+# Zeromq not need to be installed from source with debian Jessie
+#cd /usr/src/
+#wget http://download.zeromq.org/zeromq-4.0.4.tar.gz
+#tar zxvf zeromq-4.0.4.tar.gz
+#cd zeromq-4.0.4
+#./configure --enable-shared
+#make
+#make install
 
 cd /usr/src/
 git clone https://github.com/Opendigitalradio/ka9q-fec.git
