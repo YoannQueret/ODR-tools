@@ -48,7 +48,7 @@ cd /usr/src/
 git clone https://github.com/Opendigitalradio/ODR-DabMux.git
 cd ODR-DabMux/
 ./bootstrap.sh
-./configure --enable-input-zeromq --enable-input-prbs --enable-input-test --enable-input-slip --enable-input-udp --enable-output-zeromq --enable-output-raw --enable-output-edi --enable-format-bridge
+./configure --enable-input-zeromq --enable-input-prbs --enable-input-slip --enable-input-udp --enable-output-zeromq --enable-output-raw --enable-output-edi --enable-format-bridge
 make
 make install
 
