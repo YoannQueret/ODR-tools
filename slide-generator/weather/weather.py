@@ -98,14 +98,14 @@ for entry in data:
 		
 		
 		# Insert Fanny (Special Joke !)
-                #fanny = Image.open('/home/yoann/dev/weather/fanny.png')
+		#fanny = Image.open('/home/yoann/dev/ODR-tools/slide-generator/weather/fanny.png')
 		#im.paste(fanny, (50, 165), fanny)
                 
-                # Insert meteo-paris.com
-                font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMono.ttf', 10)
-		draw.text((220, 230), 'meteo-paris.com',(0,0,0), font=font)
+		# Insert meteo-paris.com
+		#font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMono.ttf', 10)
+		#draw.text((220, 230), 'meteo-paris.com',(0,0,0), font=font)
                 
-                del draw
-                
-                im.save("/tmp/%s-%s.jpg" % (entry['date'], map['name']), optimize=True,quality=90)
+		del draw
+		
+		im.save("/tmp/%s-%s.jpg" % (entry['date'], map['name']), optimize=True,quality=90)
 		
