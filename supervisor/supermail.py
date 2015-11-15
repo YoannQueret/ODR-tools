@@ -86,39 +86,30 @@ class SuperMail:
 			#self.stderr.write(headers['eventname'] + '\n')
 			#self.stderr.flush()
 			
-			if headers['eventname'] == 'PROCESS_STATE_STARTING':
-				msg = ('Process %(processname)s in group %(groupname)s STARTING from state %(from_state)s' % pheaders)
-				subject = ' %s STARTING at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
+			if headers['eventname'] == 'PROCESS_STATE_UNKNOWN':
+                                msg = ('Process %(processname)s in group %(groupname)s UNKNOWN from state %(from_state)s' % pheaders)
+                                subject = ' %s UNKNOWN at %s' % (pheaders['processname'], childutils.get_asctime())
+#			elif headers['eventname'] == 'PROCESS_STATE_STARTING':
+#				msg = ('Process %(processname)s in group %(groupname)s STARTING from state %(from_state)s' % pheaders)
+#				subject = ' %s STARTING at %s' % (pheaders['processname'], childutils.get_asctime())
 			elif headers['eventname'] == 'PROCESS_STATE_RUNNING':
 				msg = ('Process %(processname)s in group %(groupname)s RUNNING (pid %(pid)s) from state %(from_state)s' % pheaders)
 				subject = ' %s RUNNING at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
 			elif headers['eventname'] == 'PROCESS_STATE_BACKOFF':
 				msg = ('Process %(processname)s in group %(groupname)s BACKOFF from state %(from_state)s' % pheaders)
 				subject = ' %s BACKOFF at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
-			elif headers['eventname'] == 'PROCESS_STATE_STOPPING':
-				msg = ('Process %(processname)s in group %(groupname)s STOPPING from state %(from_state)s' % pheaders)
-				subject = ' %s STOPPING at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
+#			elif headers['eventname'] == 'PROCESS_STATE_STOPPING':
+#				msg = ('Process %(processname)s in group %(groupname)s STOPPING from state %(from_state)s' % pheaders)
+#				subject = ' %s STOPPING at %s' % (pheaders['processname'], childutils.get_asctime())
 			elif headers['eventname'] == 'PROCESS_STATE_STOPPED':
 				msg = ('Process %(processname)s in group %(groupname)s STOPPED from state %(from_state)s' % pheaders)
 				subject = ' %s STOPPED at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
 			elif headers['eventname'] == 'PROCESS_STATE_EXITED':
 				msg = ('Process %(processname)s in group %(groupname)s EXITED unexpectedly (pid %(pid)s) from state %(from_state)s' % pheaders)
 				subject = ' %s EXITED at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
 			elif headers['eventname'] == 'PROCESS_STATE_FATAL':
 				msg = ('Process %(processname)s in group %(groupname)s FATAL from state %(from_state)s' % pheaders)
 				subject = ' %s FATAL at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
-			elif headers['eventname'] == 'PROCESS_STATE_UNKNOWN':
-				msg = ('Process %(processname)s in group %(groupname)s UNKNOWN from state %(from_state)s' % pheaders)
-				msg = ''
-				subject = ' %s UNKNOWN at %s' % (pheaders['processname'], childutils.get_asctime())
-				pass
 			else:
 				childutils.listener.ok(self.stdout)
 				if test:
