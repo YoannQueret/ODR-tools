@@ -44,7 +44,7 @@ cd fdk-aac-dabplus/
 make
 make install
 
-apt-get --force-yes -y install python-zmq
+apt-get --force-yes -y install python-zmq libcurl4-gnutls-dev
 
 cd /usr/src/
 git clone https://github.com/Opendigitalradio/ODR-DabMux.git
