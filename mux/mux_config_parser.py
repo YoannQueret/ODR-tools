@@ -171,7 +171,10 @@ def main():
 		parser = BoostInfoParser()
 		parser.read(cli_args.input)
 		
+		# Print all configuraton file
 		print parser.load().getConfig()
+
+		# Print only subchannels section
 		print parser.load("subchannels").getConfig()
 
 	except IndexError:
