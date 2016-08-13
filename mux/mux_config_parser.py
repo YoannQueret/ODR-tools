@@ -62,13 +62,11 @@ class BoostInfoTree(object):
 			if self.value is not None and len(self.value) > 0:
 				s += "\"" + str(self.value) + "\","
 		if len(self.subTrees) > 0:
-			#if self.parent is not None:
 			s += "{"
 			for t in self.subTrees:
 				for subTree in self.subTrees[t]:
 					s += "\"" + str(t) + "\": " + subTree._prettygetConfig()
 			s = s[:-1]
-			#if self.parent is not None:
 			s +=  "},"
 			
 		return s
@@ -77,7 +75,6 @@ class BoostInfoTree(object):
 		return self._prettyprint()
 
 	def getConfig(self):
-		j = self._prettygetConfig()
 		j = self._prettygetConfig()[:-1]
 		return json.loads(j)
 
