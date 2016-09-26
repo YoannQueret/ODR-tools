@@ -12,8 +12,8 @@ mkdir -p ${BUILD_DIR}
 mkdir -p ${PKG_DIR}
 
 ### Building package for UHD
-#UHD_RELEASE="release_003_008_002"
-UHD_RELEASE="release_003_007_000"
+UHD_RELEASE="release_003_008_002"
+#UHD_RELEASE="release_003_007_000"
 
 
 VERSION=${UHD_RELEASE//_0/_}
@@ -26,7 +26,6 @@ PKG_NAME_VERSION=${PKG_NAME_VERSION//_/-}
 
 PKG_NAME_SPE="${PKG_NAME}-${PKG_NAME_VERSION}"
 
-exit
 cd ${BUILD_DIR}
 git clone https://github.com/Opendigitalradio/uhd.git
 cd uhd/
@@ -34,6 +33,7 @@ git checkout ${UHD_RELEASE}
 
 GIT_HASH=`git log --pretty=format:'%h' -n 1`
 PKG_VERSION="${VERSION}+${GIT_HASH}"
+DESTDIR="${PKG_DIR}/${PKG_NAME_SPE}-${PKG_VERSION}~${DEB_VERSION}_${ARCH}/"
 
 mkdir build
 cd build
