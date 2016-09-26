@@ -1,0 +1,12 @@
+The ODR-AudioEnc project contains
+
+The code for odr-audioenc in src/ licensed under the Apache Licence v2.0.
+See http://www.apache.org/licenses/LICENSE-2.0
+
+libtoolame-dab, derived from TooLAME, licensed under LGPL v2.1 or later.
+See libtoolame-dab/LGPL.txt. This is built into a shared library.
+
+The odr-audioenc binary is linked against the libtoolame-dab and fdk-aac shared libraries.
+
+Whether it is legal or not to distribute compiled binaries from these sources is unclear.
+Please seek legal advice to answer this question.

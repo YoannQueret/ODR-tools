@@ -1,0 +1,26 @@
+Package: ODR-DabMux
+Version: ##VERSION##
+Architecture: amd64
+Maintainer: Yoann QUERET <yoann@queret.net>
+Depends: libzmq3
+Recommends: 
+Suggests: 
+Section: Amateur Radio
+Priority: optional
+Homepage: http://http://www.opendigitalradio.org/
+Description: ODR-DabMux is a DAB (Digital Audio Broadcasting) multiplexer.
+ ODR-DabMux is a DAB (Digital Audio Broadcasting) multiplexer compliant to ETSI EN 300 401. It is the continuation of the work started by the Communications Research Center Canada on CRC-DabMux, and is now pursued in the Opendigitalradio project.
+ -
+ ODR-DabMux is part of the ODR-mmbTools tool set. More information about the ODR-mmbTools is available in the guide, available on the Opendigitalradio mmbTools page.
+ -
+ Features of ODR-DabMux:
+ - Standards-compliant DAB multiplexer
+ - Configuration file, see doc/example.mux
+ - Timestamping support required for SFN
+ - ZeroMQ ETI output that can be used with ODR-DabMod
+ - ZeroMQ input that can be used with FDK-AAC-DABplus and Toolame-DAB, and supports CURVE authentication
+ - Logging to syslog
+ - Monitoring using munin tool
+ - Includes a Telnet and ZMQ Remote Control for setting/getting parameters
+ - EDI output
+ - Support for FarSync TE1 cards (G.703)

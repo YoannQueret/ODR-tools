@@ -1,0 +1,20 @@
+Package: libodr-uhd-##VERSION##
+Version: ##VERSION##
+Architecture: amd64
+Maintainer: Yoann QUERET <yoann@queret.net>
+Depends: python-cheetah, doxygen, python-docutils, cmake
+Recommends: 
+Suggests: 
+Conflicts: libodr-uhd, libuhd003, uhd-host, libuhd-dev
+Replaces: libodr-uhd
+Provides: libodr-uhd
+Section: Amateur Radio
+Priority: optional
+Homepage: https://www.ettus.com/
+Description: universal hardware driver for Ettus Research products
+ UHD is the free & open-source software driver and API for the
+ Universal Software Radio Peripheral (USRP™) SDR platform, created
+ and sold by Ettus Research.
+ UHD supports all Ettus Research USRP™ hardware, including all
+ motherboards and daughterboards, and the combinations thereof.
+ 
