@@ -6,7 +6,7 @@ Maintainer: Yoann QUERET <yoann@queret.net>
 Depends: libc6 (>= 2.14)
 Pre-Depends: multiarch-support
 Multi-Arch: same
-Homepage: https://github.com/Opendigitalradio/fdk-aac
+Homepage: http://www.opendigitalradio.org
 Tag: role::shared-lib
 Section: non-free/libs
 Priority: optional
