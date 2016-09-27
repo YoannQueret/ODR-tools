@@ -2,11 +2,17 @@ Package: ##PACKAGE##
 Version: ##VERSION##
 Architecture: amd64
 Maintainer: Yoann QUERET <yoann@queret.net>
-Depends: libavresample2, libsamplerate0, libzmq3, libfdk-aac0 (>= 0.1.5+dab1),  libvlc5, libvlc5, libasound2, libjack0
+Depends: libavresample2,
+    libsamplerate0,
+    libzmq3,
+    libfdk-aac0 (>= 0.1.5+dab1),
+    libvlc5,
+    libasound2,
+    libjack0
 Recommends: alsa-base, alsa-utils, vlc-nox
-Section: Amateur Radio
+Section: hamradio
 Priority: optional
-Homepage: https://github.com/Opendigitalradio/ODR-AudioEnc
+Homepage: http://www.opendigitalradio.org
 Description: This package contains a DAB and DAB+ encoder that integrates into the ODR-mmbTools.
  The DAB encoder is based on toolame.
  -
