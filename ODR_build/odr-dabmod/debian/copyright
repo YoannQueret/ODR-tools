@@ -1,11 +1,15 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: odr-dabmux
+Upstream-Name: odr-dabmod
 Upstream-Contact: Matthias Braendli <matthias.braendli@mpb.li>
 Source: http://www.opendigitalradio.org/odr-mmbtools-releases
 
 Files: *
-Copyright: 2002-2009 Her Majesty the Queen in Right of Canada (Communications Research Center Canada)
+Copyright: 2005-2012 Her Majesty the Queen in Right of Canada (Communications Research Center Canada)
            2016 Matthias P. Braendli
+License: GPL-3+
+
+Files: debian/*
+Copyright: 2016 Matthias P. Braendli
 License: GPL-3+
 
 License: GPL-3+
