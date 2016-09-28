@@ -1,0 +1,30 @@
+Source: odr-audioenc
+Section: hamradio
+Priority: optional
+Maintainer: Yoann QUERET <yoann@queret.net>
+Build-Depends: debhelper (>= 9),
+    dh-autoreconf,
+    libzmq3-dev,
+    libavresample-dev,
+    libresample1-dev,
+    libfdk-aac0 (>= 0.1.5+dab1),
+    libvlc-dev,
+    libasound2-dev,
+    libjack-dev
+Standards-Version: 3.9.8
+Homepage: http://www.opendigitalradio.org
+
+Package: odr-audioenc
+Architecture: amd64 armel armhf
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: supervisor
+Description: DAB (Digital Audio Broadcasting) encoder
+ The DAB encoder is based on toolame.
+ -
+ The DAB+ encoder uses a modified library of the Fraunhofer FDK AAC code from Android,
+ patched for 960-transform to do DAB+ broadcast encoding. FDK-AAC has to be supplied separately.
+ -
+ The main tool is the odr-audioenc encoder, which can read audio from a file (raw or wav),
+ from an ALSA source, from JACK or using libVLC, and encode to a file, a pipe, or to a ZeroMQ
+ output compatible with ODR-DabMux.
+
