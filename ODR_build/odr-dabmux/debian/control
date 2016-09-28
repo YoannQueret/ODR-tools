@@ -1,0 +1,27 @@
+Source: odr-dabmux
+Section: sound
+Priority: optional
+Maintainer: Yoann QUERET <yoann@queret.net>
+Build-Depends: debhelper (>= 9),
+    dh-autoreconf,
+    libboost-system-dev,
+    libboost-thread-dev,
+    libboost-regex-dev,
+    libzmq3-dev,
+    libcurl3
+Standards-Version: 3.9.8
+Homepage: http://www.opendigitalradio.org
+
+Package: odr-dabmux
+Architecture: amd64 armel armhf
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: supervisor
+Description: DAB (Digital Audio Broadcasting) modulator
+ ODR-DabMod is a DAB (Digital Audio Broadcasting) modulator compliant to ETSI EN
+ 300 401. It is the continuation of the work started by which was developed by
+ the Communications Research Center Canada on CRC-DabMod, and is now pursued in
+ the Opendigitalradio project.
+ .
+ ODR-DabMod is part of the ODR-mmbTools tool set. More information about the
+ ODR-mmbTools is available in the guide, available on the Opendigitalradio
+ mmbTools page.
