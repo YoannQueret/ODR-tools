@@ -2,7 +2,7 @@
 apt -y -f install devscripts fakeroot automake build-essential
 
 # Install build dependancies
-apt -y -f install debhelper dh-autoreconf libboost-system-dev libboost-thread-dev libzmq3-dev libuhd-dev libfftw3-dev
+apt -y -f install debhelper dh-autoreconf libboost-system-dev libboost-thread-dev libzmq3-dev libuhd-dev libfftw3-dev libcurl4-gnutls-dev
 
 
 cd /tmp/odr-dabmod/pkg/

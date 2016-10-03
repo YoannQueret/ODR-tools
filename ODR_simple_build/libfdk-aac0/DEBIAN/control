@@ -1,0 +1,18 @@
+Package: ##PACKAGE##
+Version: ##VERSION##
+Source: fdk-aac
+Architecture: amd64
+Maintainer: Yoann QUERET <yoann@queret.net>
+Depends: libc6 (>= 2.14)
+Pre-Depends: multiarch-support
+Multi-Arch: same
+Homepage: https://github.com/Opendigitalradio/fdk-aac
+Tag: role::shared-lib
+Section: non-free/libs
+Priority: optional
+Description: Fraunhofer FDK AAC Codec Library with DAB+ support for ODR-mmbTools.
+ The FDK AAC Codec Library For Android contains an encoder implementation
+ of the Advanced Audio Coding (AAC) audio codec.
+ .
+ This package contains the files needed to run a program compiled using
+ The Fraunhofer FDK AAC Codec Library.

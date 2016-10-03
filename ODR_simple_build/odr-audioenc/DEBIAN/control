@@ -1,0 +1,18 @@
+Package: ##PACKAGE##
+Version: ##VERSION##
+Architecture: amd64
+Maintainer: Yoann QUERET <yoann@queret.net>
+Depends: libavresample2, libsamplerate0, libzmq3, libfdk-aac0 (>= 0.1.5+dab1),  libvlc5, libvlc5, libasound2, libjack0
+Recommends: alsa-base, alsa-utils, vlc-nox
+Section: Amateur Radio
+Priority: optional
+Homepage: https://github.com/Opendigitalradio/ODR-AudioEnc
+Description: This package contains a DAB and DAB+ encoder that integrates into the ODR-mmbTools.
+ The DAB encoder is based on toolame.
+ -
+ The DAB+ encoder uses a modified library of the Fraunhofer FDK AAC code from Android,
+ patched for 960-transform to do DAB+ broadcast encoding. FDK-AAC has to be supplied separately.
+ -
+ The main tool is the odr-audioenc encoder, which can read audio from a file (raw or wav),
+ from an ALSA source, from JACK or using libVLC, and encode to a file, a pipe, or to a ZeroMQ
+ output compatible with ODR-DabMux.
