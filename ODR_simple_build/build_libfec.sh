@@ -32,7 +32,7 @@ make install DESTDIR=${DESTDIR}
 
 
 cp -r ${RUN_DIR}/${PKG_NAME}/debian/ "${DESTDIR}"
-sed "s/##PACKAGE##/${PKG_NAME}/g" "${DESTDIR}/DEBIAN/control" > /tmp/control && mv /tmp/control "${DESTDIR}/DEBIAN/control"
-sed "s/##VERSION##/${PKG_VERSION}/g" "${DESTDIR}/DEBIAN/control" > /tmp/control && mv /tmp/control "${DESTDIR}/DEBIAN/control"
+sed "s/##PACKAGE##/${PKG_NAME}/g" "${DESTDIR}/debian/control" > /tmp/control && mv /tmp/control "${DESTDIR}/debian/control"
+sed "s/##VERSION##/${PKG_VERSION}/g" "${DESTDIR}/debian/control" > /tmp/control && mv /tmp/control "${DESTDIR}/debian/control"
 cd ${PKG_DIR}/
 dpkg-deb --build ${DESTDIR}
