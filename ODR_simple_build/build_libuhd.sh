@@ -32,8 +32,8 @@ cd uhd/
 git checkout ${UHD_RELEASE}
 
 GIT_HASH=`git log --pretty=format:'%h' -n 1`
-PKG_VERSION="${VERSION}+${GIT_HASH}"
-DESTDIR="${PKG_DIR}/${PKG_NAME_SPE}-${PKG_VERSION}~${DEB_VERSION}_${ARCH}/"
+PKG_VERSION="${VERSION}"
+DESTDIR="${PKG_DIR}/${PKG_NAME_SPE}-${PKG_VERSION}~${GIT_HASH}_${DEB_VERSION}_${ARCH}/"
 
 mkdir build
 cd build
@@ -43,8 +43,8 @@ make test
 make install DESTDIR=${DESTDIR}
 
 
-cp -r ${RUN_DIR}/${PKG_NAME}/debian/ "${DESTDIR}"
-sed "s/##PACKAGE##/${PKG_NAME_SPE}/g" "${DESTDIR}/debian/control" > /tmp/control && mv /tmp/control "${DESTDIR}/debian/control"
-sed "s/##VERSION##/${PKG_VERSION}/g" "${DESTDIR}/debian/control" > /tmp/control && mv /tmp/control "${DESTDIR}/debian/control"
+cp -r ${RUN_DIR}/${PKG_NAME}/DEBIAN/ "${DESTDIR}"
+sed "s/##PACKAGE##/${PKG_NAME_SPE}/g" "${DESTDIR}/DEBIAN/control" > /tmp/control && mv /tmp/control "${DESTDIR}/DEBIAN/control"
+sed "s/##VERSION##/${PKG_VERSION}/g" "${DESTDIR}/DEBIAN/control" > /tmp/control && mv /tmp/control "${DESTDIR}/DEBIAN/control"
 cd ${PKG_DIR}/
 dpkg-deb --build ${DESTDIR}
