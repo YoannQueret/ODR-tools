@@ -1,5 +1,7 @@
 #!/bin/bash
 
+apt install --force-yes -y automake build-essential libtool libasound2-dev libjack-dev libvlc-dev libzmq3-dev libavresample-dev libsamplerate0-dev libfdk-aac0=0.1.5+dab1-aad197a
+
 BUILD_DIR="/tmp/build-ODR/"
 PKG_DIR="/tmp/build-ODR/pkg/"
 RUN_DIR=$(dirname $(readlink -f $0))

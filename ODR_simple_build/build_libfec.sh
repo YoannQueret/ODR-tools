@@ -2,7 +2,6 @@
 
 apt install --force-yes -y automake build-essential
 
-
 BUILD_DIR="/tmp/build-ODR/"
 PKG_DIR="/tmp/build-ODR/pkg/"
 RUN_DIR=$(dirname $(readlink -f $0))

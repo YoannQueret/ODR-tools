@@ -1,5 +1,7 @@
 #!/bin/bash
 
+apt install --force-yes -y automake build-essential libtool libboost-system-dev libboost-thread-dev libboost-regex-dev libfec libcurl4-gnutls-dev libzmq3-dev
+
 BUILD_DIR="/tmp/build-ODR/"
 PKG_DIR="/tmp/build-ODR/pkg/"
 RUN_DIR=$(dirname $(readlink -f $0))
