@@ -16,7 +16,7 @@ mkdir -p ${PKG_DIR}
 ### Building package for fdk-aac
 cd ${BUILD_DIR}
 git clone https://github.com/Opendigitalradio/ODR-DabMod.git
-cd ODR-DabMux/
+cd ODR-DabMod/
 
 VERSION=`git describe --tags`
 VERSION=${VERSION#v*}
@@ -25,7 +25,7 @@ PKG_VERSION="${VERSION}+${GIT_HASH}"
 DESTDIR="${PKG_DIR}/${PKG_NAME}-${PKG_VERSION}~${DEB_VERSION}_${ARCH}/"
 
 ./bootstrap.sh
-./configure --enable-output-raw --enable-input-udp
+./configure --enable-zeromq --enable-fft-simd --enable-output-uhd
 make
 make install DESTDIR=${DESTDIR}
 
