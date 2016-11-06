@@ -37,10 +37,27 @@ make install
 apt-get --force-yes -y install libboost-thread-dev libboost-system-dev libmagickwand-dev libasound2-dev jackd2 libjack-jackd2-dev mplayer libavresample2 libsamplerate0 libvlc-dev vlc alsa-base alsa-utils
 
 cd /usr/src/
-git clone https://github.com/Opendigitalradio/fdk-aac-dabplus.git
-cd fdk-aac-dabplus/
+git clone https://github.com/Opendigitalradio/fdk-aac.git
+cd fdk-aac/
 ./bootstrap
-./configure --enable-jack --enable-vlc
+./configure
+make
+make install
+ldconfig
+
+cd /usr/src/
+git clone https://github.com/Opendigitalradio/ODR-AudioEnc.git
+cd ODR-AudioEnc/
+./bootstrap
+./configure --enable-jack --enable-vlc --enable-alsa
+make
+make install
+
+cd /usr/src/
+git clone https://github.com/Opendigitalradio/ODR-PadEnc.git
+cd ODR-PadEnc/
+./bootstrap
+./configure
 make
 make install
 
@@ -56,6 +73,8 @@ make install
 
 apt-get --force-yes -y install libboost-all-dev libusb-1.0-0-dev python-cheetah doxygen python-docutils cmake libudev-dev libuhd-dev libfftw3-dev
 
+# 3.7 For MFM
+# 3.8.2 For SFN - juste use release_003_008_002 instead release_003_007_000
 cd /usr/src/
 git clone git://github.com/EttusResearch/uhd.git
 cd uhd/
@@ -79,11 +98,4 @@ cd ODR-DabMod/
 make
 make install
 
-apt-get --force-yes -y install sudo
 
-cd ~
-git clone https://github.com/Opendigitalradio/dab-scripts.git
-cd dab-scripts/
-mv examplesite/ site
-mkdir site/slide
-wget "https://gist.githubusercontent.com/YoannQueret/6c719979d64a2deadf75/raw/6811faee12706f429b37e63758e13b32b5ab6cc2/run.sh" -O run.sh
