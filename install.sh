@@ -61,7 +61,7 @@ cd ODR-PadEnc/
 make
 make install
 
-apt-get --force-yes -y install python-zmq libcurl4-gnutls-dev
+apt-get --force-yes -y install python-zmq libcurl4-gnutls-dev libboost-regex-dev
 
 cd /usr/src/
 git clone https://github.com/Opendigitalradio/ODR-DabMux.git
