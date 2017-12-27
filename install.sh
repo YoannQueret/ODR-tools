@@ -49,7 +49,7 @@ cd /usr/src/
 git clone https://github.com/Opendigitalradio/ODR-AudioEnc.git
 cd ODR-AudioEnc/
 ./bootstrap
-./configure --enable-jack --enable-vlc --enable-alsa
+./configure --enable-vlc --enable-alsa
 make
 make install
 
