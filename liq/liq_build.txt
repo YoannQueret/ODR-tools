@@ -1,6 +1,6 @@
 mkdir liquidsoap-1.2.1~jessie/
 cd liquidsoap-1.2.1~jessie/
-cp -R ../DEBIAN/ /
+cp -R ../DEBIAN/ .
 
 mkdir -p etc/init.d/
 cp /etc/init.d/liquidsoap etc/init.d/liquidsoap
@@ -28,4 +28,4 @@ mkdir -p usr/share/man/man1/
 cp /usr/share/man/man1/liquidsoap.1 usr/share/man/man1/liquidsoap.1
 
 cd ..
-dpkg-deb --build yf-archiver-1.0.2~jessie/
+dpkg-deb --build liquidsoap-1.2.1~jessie/
