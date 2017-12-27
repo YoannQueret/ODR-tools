@@ -1,0 +1,94 @@
+# Add contrib, non-free to apt source
+# Add mutimedia to apt source : deb http://www.deb-multimedia.org jessie main
+
+cat > /etc/apt/sources.list <<- EOM
+deb http://ftp.fr.debian.org/debian/ jessie main contrib non-free
+deb http://security.debian.org/ jessie/updates main contrib non-free
+deb http://ftp.fr.debian.org/debian/ jessie-updates main contrib non-free
+deb http://www.deb-multimedia.org jessie main
+EOM
+
+apt update
+apt install deb-multimedia-keyring
+apt update
+
+
+# Base
+apt install git build-essential autoconf automake
+
+# ocaml base 
+apt install libdtools-ocaml-dev libduppy-ocaml-dev libmm-ocaml-dev libpcre-ocaml-dev
+
+# install ocaml-bytes lib
+cd /usr/src/
+git clone https://github.com/chambart/ocaml-bytes.git
+cd ocaml-bytes/
+./configure --prefix=/usr --libdir=/usr/lib/ocaml/
+make
+make install
+
+# install ocaml dependancies
+apt install \
+libcry-ocaml-dev \
+libcamomile-ocaml-dev \
+libcamomile-ocaml-data \
+libmagic-ocaml-dev \
+libogg-ocaml-dev \
+libvorbis-ocaml-dev \
+libopus-ocaml-dev \
+libtheora-ocaml-dev \
+libspeex-ocaml-dev \
+libflac-ocaml-dev \
+libmad-ocaml-dev \
+libmp3lame-ocaml-dev \
+libshine-ocaml-dev \
+libtaglib-ocaml-dev \
+libfaad-ocaml-dev \
+libfdkaac-ocaml-dev \
+libsamplerate-ocaml-dev \
+libxmlplaylist-ocaml-dev \
+libdssi-ocaml-dev \
+liblo-ocaml-dev \
+libladspa-ocaml-dev \
+libsoundtouch-ocaml-dev \
+libao-ocaml-dev \
+libalsa-ocaml-dev \
+libinotify-ocaml-dev \
+libssl-ocaml-dev \
+libyojson-ocaml-dev \
+libaacplus-ocaml-dev \
+libvoaacenc-ocaml-dev \
+libocamlnet-ssl-ocaml-dev \
+liblwt-ssl-ocaml-dev \
+curl
+
+# install liquidsoap
+cd /usr/src/
+
+wget https://github.com/savonet/liquidsoap/releases/download/1.2.1/liquidsoap-1.2.1-full.tar.gz
+tar zxvf liquidsoap-1.2.1-full.tar.gz
+cd liquidsoap-1.2.1-full/
+
+## NEED PATCH https://github.com/savonet/liquidsoap/blob/master/src/sources/http_source.ml#L147 ##
+
+./bootstrap
+cp PACKAGES.default PACKAGES
+sed -i "s/ocaml-portaudio/#ocaml-portaudio/g" PACKAGES
+sed -i "s/ocaml-pulseaudio/#ocaml-pulseaudio/g" PACKAGES
+sed -i "s/ocaml-bjack/#ocaml-bjack/g" PACKAGES
+sed -i "s/ocaml-gstreamer/#ocaml-gstreamer/g" PACKAGES
+sed -i "s/ocaml-schroedinger/#ocaml-schroedinger/g" PACKAGES
+sed -i "s/ocaml-shine/#ocaml-shine/g" PACKAGES
+sed -i "s/ocaml-gavl/#ocaml-gavl/g" PACKAGES
+sed -i "s/ocaml-ffmpeg/#ocaml-ffmpeg/g" PACKAGES
+sed -i "s/ocaml-frei0r/#ocaml-frei0r/g" PACKAGES
+sed -i "s/ocaml-lastfm/#ocaml-lastfm/g" PACKAGES
+
+# 1.2.1
+## NEED ADJUST DIR
+./configure --prefix=/ --exec-prefix=/ --sysconfdir=/etc --localstatedir=/var --libdir=/lib
+
+make clean
+make
+sudo make install
+
