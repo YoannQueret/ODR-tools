@@ -63,13 +63,18 @@ liblwt-ssl-ocaml-dev \
 curl
 
 # install liquidsoap
+addgroup --system liquidsoap
+adduser --system --disabled-password --disabled-login --home /usr/share/liquidsoap --ingroup liquidsoap liquidsoap
 cd /usr/src/
 
 wget https://github.com/savonet/liquidsoap/releases/download/1.2.1/liquidsoap-1.2.1-full.tar.gz
 tar zxvf liquidsoap-1.2.1-full.tar.gz
 cd liquidsoap-1.2.1-full/
 
-## NEED PATCH https://github.com/savonet/liquidsoap/blob/master/src/sources/http_source.ml#L147 ##
+## NEED PATCH liquidsoap-1.2.1/src/sources/http_source.ml
+## line 147
+## let url_expr = Str.regexp "^[Hh][Tt][Tt][Pp]://\\([^/]+\\)\\(/.*\\)?$"
+## https://github.com/savonet/liquidsoap/blob/master/src/sources/http_source.ml#L147
 
 ./bootstrap
 cp PACKAGES.default PACKAGES
@@ -85,10 +90,23 @@ sed -i "s/ocaml-frei0r/#ocaml-frei0r/g" PACKAGES
 sed -i "s/ocaml-lastfm/#ocaml-lastfm/g" PACKAGES
 
 # 1.2.1
-## NEED ADJUST DIR
-./configure --prefix=/ --exec-prefix=/ --sysconfdir=/etc --localstatedir=/var --libdir=/lib
+## NEED TO ADJUST DIR
+ prefix         : /
+ exec_prefix    : /usr
+ binary         : ${exec_prefix}/bin
+ configuration  : /etc/liquidsoap
+ logging        : /var/log/liquidsoap
+ PIDs           : /var/run/liquidsoap
+ logrotate conf : /etc/logrotate.d
+ man page       : ${datarootdir}/man/man1
+ doc            : ${datarootdir}/doc
+
+./configure --prefix=/ --exec-prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib --datarootdir=/usr/share --with-user=liquidsoap --with-group=liquidsoap
 
 make clean
 make
+make doc
 sudo make install
+cd liquidsoap-1.2.1/
+sudo make service-install
 

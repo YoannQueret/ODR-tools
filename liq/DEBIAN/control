@@ -1,0 +1,25 @@
+Package: liquidsoap
+Version: 1.2.1~jessie
+Architecture: amd64
+Maintainer: Yoann QUERET <yoann@queret.net>
+Depends: libc6 (>= 2.7), libmagic1, libpcre3 (>= 8.10), perl, wget, sox, adduser, camlp4, file, ledit, festival, libmagic-ocaml-dev, libcamomile-ocaml-dev, libxml-light-ocaml-dev, ocaml-compiler-libs, libfindlib-ocaml, libfindlib-ocaml-dev, libasound2-dev, libpulse-ocaml-dev, libmad-ocaml-dev, libtaglib-ocaml-dev, libmp3lame0, libmp3lame-dev, libvorbis-ocaml-dev, libflac++-dev, libflac++6, libflac8, libsoundtouch-ocaml-dev, libsamplerate-ocaml-dev, libxmlplaylist-ocaml-dev, libdtools-ocaml-dev, libduppy-ocaml-dev, libao-dev, libfdk-aac-dev, libao-ocaml-dev, libtagc0-dev, libmp3lame-ocaml-dev, libflac-ocaml-dev, libpcre-ocaml-dev, libaacplus-ocaml-dev, libaacplus-ocaml-dynlink, libspeex-ocaml-dev, libtheora-ocaml-dev, libopus-ocaml-dev, libvoaacenc-ocaml-dev, liblo-ocaml-dev, libschroedinger-ocaml-dev, libshine-ocaml-dev, libsoundtouch-ocaml-dev, libladspa-ocaml-dev, libdssi-ocaml-dev, festival-dev, sox, libfaad-ocaml-dev
+Recommends: logrotate, vorbisgain, vorbis-tools
+Suggests: icecast2 
+Section: sound
+Priority: optional
+Homepage: http://savonet.sourceforge.net/
+Description: audio streaming language
+ Liquidsoap is a powerful tool for building complex audio streaming systems,
+ typically targeting internet radios (e.g. icecast streams).
+ .
+ It consists of a simple script language, in which you can create, combine and
+ transform audio sources. Its design makes liquidsoap flexible and easily
+ extensible.
+ .
+ Some of the typical uses are:
+  * dynamically generating playlists depending on the time or other factors
+  * having smooth transitions between songs
+  * adding jingles periodically
+  * applying effects on the sound like volume normalization
+  * reencoding the stream at various qualities
+  * remotely controlling the stream

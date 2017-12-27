@@ -1,0 +1,3 @@
+/etc/logrotate.d/liquidsoap
+/etc/liquidsoap/radio.liq.example
+/etc/init.d/liquidsoap

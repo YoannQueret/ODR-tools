@@ -1,0 +1,31 @@
+mkdir liquidsoap-1.2.1~jessie/
+cd liquidsoap-1.2.1~jessie/
+cp -R ../DEBIAN/ /
+
+mkdir -p etc/init.d/
+cp /etc/init.d/liquidsoap etc/init.d/liquidsoap
+
+mkdir -p etc/liquidsoap/
+cp /etc/liquidsoap/* etc/liquidsoap/
+
+mkdir -p etc/logrotate.d/
+cp /etc/logrotate.d/liquidsoap etc/logrotate.d/liquidsoap
+
+mkdir -p var/run/liquidsoap/
+
+mkdir -p var/log/liquidsoap/
+
+mkdir -p usr/bin/
+cp /usr/bin/liquidsoap usr/bin/liquidsoap
+
+mkdir -p usr/lib/
+cp -R /usr/lib/liquidsoap/ usr/lib/
+
+mkdir -p usr/share/doc/
+cp -R /usr/share/doc/liquidsoap-1.2.1/ usr/share/doc/
+
+mkdir -p usr/share/man/man1/
+cp /usr/share/man/man1/liquidsoap.1 usr/share/man/man1/liquidsoap.1
+
+cd ..
+dpkg-deb --build yf-archiver-1.0.2~jessie/
