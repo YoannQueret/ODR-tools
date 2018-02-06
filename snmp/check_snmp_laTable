@@ -1,0 +1,102 @@
+#!/usr/bin/python
+
+import argparse
+from pysnmp.hlapi import *
+import json
+import sys
+import collections
+
+NAGIOS_OK = 0
+NAGIOS_WARNING = 1
+NAGIOS_CRITICAL = 2
+NAGIOS_UNKNOWN = 3
+
+def get_laTable(snmp_host, snmp_port=161, snmp_community='public', snmp_version=1):
+    laTable = collections.OrderedDict()
+    
+    for errorIndication, \
+        errorStatus, \
+        errorIndex, \
+        varBinds in nextCmd(SnmpEngine(),
+                    CommunityData(snmp_community, mpModel=snmp_version),
+                    UdpTransportTarget((snmp_host, snmp_port)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'laIndex')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'laNames')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'laLoad')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'laConfig')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'laErrorFlag')),
+                    lexicographicMode=False):
+
+    
+        if errorIndication:
+            print(errorIndication)
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        elif errorStatus:
+            print('%s at %s' % (
+                    errorStatus.prettyPrint(),
+                    errorIndex and varBinds[int(errorIndex)-1][0] or '?'
+                )
+            )
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        else:
+            la = {}
+            for varBind in varBinds:
+                p = '='.join([ x.prettyPrint() for x in varBind ])
+                p_name = p[(p.find("::")+2):(p.find("."))]
+                p_idx = p[(p.find(".")+1):(p.find("="))]
+                p_value = p[(p.find("=")+1):]
+                la[p_name] = p_value
+            laTable[p_idx] = la
+    return laTable
+
+if __name__ == '__main__':
+    # Get configuration file in argument
+    parser = argparse.ArgumentParser(description='check_snmp_laTable')
+    parser.add_argument('-H','--host', help='SNMP host', required=True)
+    parser.add_argument('-p','--port', help='SNMP port (default: 161)', default=161, required=False)
+    parser.add_argument('-C','--snmp_community', help='SNMP community (default: public)', default='public', required=False)
+    parser.add_argument('-P','--snmp_version', help='SNMP version (default: v2c)', default='v2c', required=False)
+    parser.add_argument('-d','--debug', help='display all laTable content', action='store_true', required=False)
+    cli_args = parser.parse_args()
+
+    # Set SNMP version
+    if cli_args.snmp_version == 'v1':
+        snmp_version = 0
+    elif cli_args.snmp_version == 'v2c':
+        snmp_version = 1
+    else:
+        snmp_version = 0
+
+    # Get SNMP laTable
+    laTable = get_laTable(snmp_host=cli_args.host, snmp_port=cli_args.port, snmp_community=cli_args.snmp_community, snmp_version=snmp_version)
+
+
+
+    # Processing
+    if cli_args.debug:
+        print json.dumps(laTable, indent=4, separators=(',', ': '))
+    else:
+        load = {}
+        critical = False
+        for laKey, laValue in laTable.iteritems():
+            load[laValue['laNames']] = { 'laIndex': laValue['laIndex'],
+                                        'laNames': laValue['laNames'],
+                                        'laLoad': laValue['laLoad'],
+                                        'laConfig': laValue['laConfig'],
+                                        'laErrorFlag': laValue['laErrorFlag'],
+                                        }
+            if float(laValue['laLoad']) >= float(laValue['laConfig']):
+                critical = True
+        if critical:
+            print "SNMP CRITICAL - %s,%s,%s|Load-1=%s(%s),Load-5=%s(%s),Load-15=%s(%s)" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'],load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
+            sys.exit(NAGIOS_CRITICAL)
+        else:
+            print "SNMP OK - %s,%s,%s|Load-1=%s(%s),Load-5=%s(%s),Load-15=%s(%s)" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'], load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
+            sys.exit(NAGIOS_OK)
+
+        print "SNMP UNKNOWN - Can't found laTable"
+        sys.exit(NAGIOS_UNKNOWN)
+

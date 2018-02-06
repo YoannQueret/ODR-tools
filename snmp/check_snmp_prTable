@@ -1,0 +1,98 @@
+#!/usr/bin/python
+
+import argparse
+from pysnmp.hlapi import *
+import json
+import sys
+import collections
+
+NAGIOS_OK = 0
+NAGIOS_WARNING = 1
+NAGIOS_CRITICAL = 2
+NAGIOS_UNKNOWN = 3
+
+def get_prTable(snmp_host, snmp_port=161, snmp_community='public', snmp_version=1):
+    prTable = collections.OrderedDict()
+
+    for errorIndication, \
+        errorStatus, \
+        errorIndex, \
+        varBinds in nextCmd(SnmpEngine(),
+                    CommunityData(snmp_community, mpModel=snmp_version),
+                    UdpTransportTarget((snmp_host, snmp_port)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prIndex')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prNames')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prMin')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prMax')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prCount')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'prErrorFlag')),
+                    lexicographicMode=False):
+
+        if errorIndication:
+            print(errorIndication)
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        elif errorStatus:
+            print('%s at %s' % (
+                    errorStatus.prettyPrint(),
+                    errorIndex and varBinds[int(errorIndex)-1][0] or '?'
+                )
+            )
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        else:
+            pr = {}
+            for varBind in varBinds:
+                p = '='.join([ x.prettyPrint() for x in varBind ])
+                p_name = p[(p.find("::")+2):(p.find("."))]
+                p_idx = p[(p.find(".")+1):(p.find("="))]
+                p_value = p[(p.find("=")+1):]
+                pr[p_name] = p_value
+            prTable[p_idx] = pr
+    return prTable
+
+if __name__ == '__main__':
+    # Get configuration file in argument
+    parser = argparse.ArgumentParser(description='check_snmp_prTable')
+    parser.add_argument('-H','--host', help='SNMP host', required=True)
+    parser.add_argument('-p','--port', help='SNMP port (default: 161)', default=161, required=False)
+    parser.add_argument('-C','--snmp_community', help='SNMP community (default: public)', default='public', required=False)
+    parser.add_argument('-P','--snmp_version', help='SNMP version (default: v2c)', default='v2c', required=False)
+    parser.add_argument('-d','--debug', help='display all prTable content', action='store_true', required=False)
+    parser.add_argument('-n','--search', help='prNames search', required=False)
+    cli_args = parser.parse_args()
+    
+    # Check if needed argument is available
+    if cli_args.debug is False and cli_args.search is None:
+        parser.error("--search or --debug argument is required.")
+        sys.exit(NAGIOS_UNKNOWN)
+
+    # Set SNMP version
+    if cli_args.snmp_version == 'v1':
+        snmp_version = 0
+    elif cli_args.snmp_version == 'v2c':
+        snmp_version = 1
+    else:
+        snmp_version = 0
+
+    # Get SNMP prTable
+    prTable = get_prTable(snmp_host=cli_args.host, snmp_port=cli_args.port, snmp_community=cli_args.snmp_community, snmp_version=snmp_version)
+
+
+
+    # Processing
+    if cli_args.debug:
+        print json.dumps(prTable, indent=4, separators=(',', ': '))
+    else:
+        for prKey, prValue in prTable.iteritems():
+            if prValue['prNames'] == cli_args.search:
+                if prValue['prCount'] >= prValue['prMin'] and prValue['prCount'] <= prValue['prMax']:
+                    print "SNMP OK - %s|prCount=%s,prMin=%s,prMax=%s;0;0;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
+                    sys.exit(NAGIOS_OK)
+                else:
+                    print "SNMP CRITICAL - %s|prCount=%s,prMin=%s,prMax=%s;1;1;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
+                    sys.exit(NAGIOS_CRITICAL)
+        print "SNMP UNKNOWN - Can't found '%s' in prTable" % cli_args.search
+        sys.exit(NAGIOS_UNKNOWN)
+
