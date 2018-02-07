@@ -93,10 +93,10 @@ if __name__ == '__main__':
         for dskKey, dskValue in dskTable.iteritems():
             if dskValue['dskPath'] == cli_args.search:
                 if (100-int(dskValue['dskPercent'])) > int(dskValue['dskMinPercent']):
-                    print "SNMP OK - %s|dskUsed=%s,dskAvail=%s,dskPercentAvail=%s,dskMinPercentAvail=%s;0;0;" % (dskValue['dskUsed'], dskValue['dskUsed'], dskValue['dskAvail'], (100-int(dskValue['dskPercent'])), dskValue['dskMinPercent'])
+                    print "SNMP OK - %s|dskUsed=%s dskAvail=%s dskPercentAvail=%s dskMinPercentAvail=%s;0;0;" % (dskValue['dskUsed'], dskValue['dskUsed'], dskValue['dskAvail'], (100-int(dskValue['dskPercent'])), dskValue['dskMinPercent'])
                     sys.exit(NAGIOS_OK)
                 else:
-                    print "SNMP CRITICAL - %s|dskUsed=%s,dskAvail=%s,dskPercentAvail=%s,dskMinPercentAvail=%s;1;1;" % (dskValue['dskPercent'], dskValue['dskUsed'], dskValue['dskAvail'], (100-int(dskValue['dskPercent'])), dskValue['dskMinPercent'])
+                    print "SNMP CRITICAL - %s|dskUsed=%s dskAvail=%s dskPercentAvail=%s dskMinPercentAvail=%s;1;1;" % (dskValue['dskPercent'], dskValue['dskUsed'], dskValue['dskAvail'], (100-int(dskValue['dskPercent'])), dskValue['dskMinPercent'])
                     sys.exit(NAGIOS_CRITICAL)
         
         print "SNMP UNKNOWN - Can't found '%s' in dskTable" % cli_args.search

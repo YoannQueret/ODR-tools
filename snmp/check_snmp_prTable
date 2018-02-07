@@ -88,10 +88,10 @@ if __name__ == '__main__':
         for prKey, prValue in prTable.iteritems():
             if prValue['prNames'] == cli_args.search:
                 if prValue['prCount'] >= prValue['prMin'] and prValue['prCount'] <= prValue['prMax']:
-                    print "SNMP OK - %s|prCount=%s,prMin=%s,prMax=%s;0;0;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
+                    print "SNMP OK - %s|prCount=%s prMin=%s prMax=%s;0;0;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
                     sys.exit(NAGIOS_OK)
                 else:
-                    print "SNMP CRITICAL - %s|prCount=%s,prMin=%s,prMax=%s;1;1;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
+                    print "SNMP CRITICAL - %s|prCount=%s prMin=%s prMax=%s;1;1;" % (prValue['prCount'], prValue['prCount'], prValue['prMin'], prValue['prMax'])
                     sys.exit(NAGIOS_CRITICAL)
         print "SNMP UNKNOWN - Can't found '%s' in prTable" % cli_args.search
         sys.exit(NAGIOS_UNKNOWN)

@@ -1,0 +1,99 @@
+#!/usr/bin/python
+
+import argparse
+from pysnmp.hlapi import *
+import json
+import sys
+import collections
+
+NAGIOS_OK = 0
+NAGIOS_WARNING = 1
+NAGIOS_CRITICAL = 2
+NAGIOS_UNKNOWN = 3
+
+def get_memory(snmp_host, snmp_port=161, snmp_community='public', snmp_version=1):
+    memory = collections.OrderedDict()
+    
+    for errorIndication, \
+        errorStatus, \
+        errorIndex, \
+        varBinds in nextCmd(SnmpEngine(),
+                    CommunityData(snmp_community, mpModel=snmp_version),
+                    UdpTransportTarget((snmp_host, snmp_port)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'memTotalSwap')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'memAvailSwap')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'memMinimumSwap')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'memTotalReal')),
+                    ObjectType(ObjectIdentity('UCD-SNMP-MIB', 'memAvailReal')),
+                    lexicographicMode=False):
+
+    
+        if errorIndication:
+            print(errorIndication)
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        elif errorStatus:
+            print('%s at %s' % (
+                    errorStatus.prettyPrint(),
+                    errorIndex and varBinds[int(errorIndex)-1][0] or '?'
+                )
+            )
+            sys.exit(NAGIOS_UNKNOWN)
+            break
+        else:
+            for varBind in varBinds:
+                p = '='.join([ x.prettyPrint() for x in varBind ])
+                p_name = p[(p.find("::")+2):(p.find("."))]
+                p_idx = p[(p.find(".")+1):(p.find("="))]
+                p_value = p[(p.find("=")+1):]
+                memory[p_name]=p_value
+    return memory
+
+if __name__ == '__main__':
+    # Get configuration file in argument
+    parser = argparse.ArgumentParser(description='check_snmp_memory')
+    parser.add_argument('-H','--host', help='SNMP host', required=True)
+    parser.add_argument('-p','--port', help='SNMP port (default: 161)', default=161, required=False)
+    parser.add_argument('-C','--snmp_community', help='SNMP community (default: public)', default='public', required=False)
+    parser.add_argument('-P','--snmp_version', help='SNMP version (default: v2c)', default='v2c', required=False)
+    parser.add_argument('-d','--debug', help='display all memory content', action='store_true', required=False)
+    parser.add_argument('-w','--warning', help='Set warning in percent', required=False)
+    parser.add_argument('-c','--critical', help='Set critical in percent', required=False)
+    cli_args = parser.parse_args()
+
+    # Set SNMP version
+    if cli_args.snmp_version == 'v1':
+        snmp_version = 0
+    elif cli_args.snmp_version == 'v2c':
+        snmp_version = 1
+    else:
+        snmp_version = 0
+
+    # Get SNMP memory
+    memory = get_memory(snmp_host=cli_args.host, snmp_port=cli_args.port, snmp_community=cli_args.snmp_community, snmp_version=snmp_version)
+
+
+
+    # Processing
+    if cli_args.debug:
+        print json.dumps(memory, indent=4, separators=(',', ': '))
+    else:
+        memUsed = int(memory['memTotalReal']) - int(memory['memAvailReal'])
+        percentMemUsed = ( memUsed * 100 ) / int(memory['memTotalReal'])
+        if cli_args.critical:
+            crit = cli_args.critical.split(':')
+            if percentMemUsed < int(crit[0]) or percentMemUsed > int(crit[1]):
+                print "SNMP CRITICAL - %s|memTotalReal=%s memUsedReal=%s memUsedRealPercent=%s;1;1;" % ( memUsed, memory['memTotalReal'], memUsed, percentMemUsed)
+                sys.exit(NAGIOS_CRITICAL)
+                
+        if cli_args.warning:
+            warn = cli_args.warning.split(':')
+            if percentMemUsed < int(warn[0]) or percentMemUsed > int(warn[1]):
+                print "SNMP WARNING - %s|memTotalReal=%s memUsedReal=%s memUsedRealPercent=%s;1;0;" % ( memUsed, memory['memTotalReal'], memUsed, percentMemUsed)
+                sys.exit(NAGIOS_WARNING)
+        
+        print "SNMP OK - %s|memTotalReal=%s memUsedReal=%s memUsedRealPercent=%s;0;0;" % ( memUsed, memory['memTotalReal'], memUsed, percentMemUsed)
+        sys.exit(NAGIOS_OK)
+
+

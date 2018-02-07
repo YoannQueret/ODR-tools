@@ -91,10 +91,10 @@ if __name__ == '__main__':
             if float(laValue['laLoad']) >= float(laValue['laConfig']):
                 critical = True
         if critical:
-            print "SNMP CRITICAL - %s,%s,%s|Load-1=%s(%s),Load-5=%s(%s),Load-15=%s(%s)" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'],load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
+            print "SNMP CRITICAL - %s,%s,%s|Load-1=%s(%s) Load-5=%s(%s) Load-15=%s(%s);1;1;" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'],load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
             sys.exit(NAGIOS_CRITICAL)
         else:
-            print "SNMP OK - %s,%s,%s|Load-1=%s(%s),Load-5=%s(%s),Load-15=%s(%s)" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'], load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
+            print "SNMP OK - %s,%s,%s|Load-1=%s(%s) Load-5=%s(%s) Load-15=%s(%s);0;0;" % (load['Load-1']['laLoad'], load['Load-5']['laLoad'],load['Load-15']['laLoad'],load['Load-1']['laLoad'], load['Load-1']['laConfig'], load['Load-5']['laLoad'], load['Load-5']['laConfig'], load['Load-15']['laLoad'], load['Load-15']['laConfig'])
             sys.exit(NAGIOS_OK)
 
         print "SNMP UNKNOWN - Can't found laTable"
