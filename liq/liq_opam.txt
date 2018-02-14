@@ -1,0 +1,48 @@
+#
+# Debian Jessie - 8
+#
+
+# Add non-free repository
+sed -i -e 's/main$/main non-free/g' /etc/apt/sources.list
+apt update
+apt upgrade
+
+# create liquidsoap user
+addgroup --system liquidsoap
+adduser --system --disabled-password --disabled-login --home /usr/share/liquidsoap --ingroup liquidsoap liquidsoap
+adduser liquidsoap audio
+
+# install system packages like opam
+apt-get install ocaml ocaml-native-compilers camlp4-extra opam autotools-dev automake curl
+mkdir /usr/local/opam
+chown liquidsoap:liquidsoap /usr/local/opam
+chown liquidsoap:liquidsoap /usr/share/liquidsoap/
+
+# we need to switch to the liquidsoap, some things do not like being installed as root
+usermod -s /bin/bash liquidsoap
+# switch to now active liquidsoap user
+su - liquidsoap
+# Use only ipv4 for curl (need ? work ?)
+echo ipv4 >> ~/.curlrc
+echo insecure >> ~/.curlrc
+# run as liquidsoap user
+opam init --root=/usr/local/opam
+
+# To setup the opam/ocaml you initialized in the current shell, you need to run:
+# Until you install a profile you need to do this each time you want liquidsoap on the $PATH
+eval `opam config env --root=/usr/local/opam`
+
+opam install depext
+
+# I installed the deps as root before re-installing as user liquidsoap
+# run this as root after running an additional eval `opam config env --root=/usr/local/opam`
+opam depext alsa cry fdkaac lame liquidsoap mad opus taglib vorbis
+
+# install liquidsoap and deps we need (run this as user liquidsoap again)
+# run the git instruction instead of this for now (or re-install from git after pinning below)
+opam install alsa cry fdkaac lame liquidsoap mad opus taglib vorbis    
+
+# run this as root to make liquidsoap your default on the whole system (extremely hacky)
+echo "eval \`opam config env --root=/usr/local/opam\`" > /etc/profile.d/liquidsoap-opam.sh
+ln -s /usr/local/opam/system/bin/liquidsoap /usr/bin/liquidsoap
+chmod 777 /usr/local/opam/
