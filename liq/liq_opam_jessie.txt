@@ -34,9 +34,13 @@ eval `opam config env --root=/usr/local/opam`
 
 opam install depext
 
-# I installed the deps as root before re-installing as user liquidsoap
-# run this as root after running an additional eval `opam config env --root=/usr/local/opam`
+# run this as root 
+eval `opam config env --root=/usr/local/opam`
 opam depext alsa cry fdkaac lame liquidsoap mad opus taglib vorbis
+
+# welcome back to liquidsoap user
+su - liquidsoap
+eval `opam config env --root=/usr/local/opam`
 
 # install liquidsoap and deps we need (run this as user liquidsoap again)
 # run the git instruction instead of this for now (or re-install from git after pinning below)
