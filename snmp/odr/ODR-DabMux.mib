@@ -1,0 +1,236 @@
+-- OPENDIGITALRADIO SMIV2 SPECIFICATION MIB
+
+OPENDIGITALRADIO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY,OBJECT-TYPE,
+    NOTIFICATION-TYPE,enterprises,
+    Integer32,IpAddress                     FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION,DisplayString        FROM SNMPv2-TC;
+
+
+dabmux MODULE-IDENTITY
+     LAST-UPDATED "201802190000Z"
+     ORGANIZATION "OpenDigitalRadio"
+     CONTACT-INFO
+        "OpenDigitalRadio
+        opendigitalradio.org
+ 
+        Postal: OpenDigitalRadio
+        Rue de Lausanne 16
+        1201 Genève
+        Switzerland
+ 
+        EMail: info@opendigitalradio.org"
+ 
+     DESCRIPTION
+        "The MIB for ODR-DabMux"
+ 
+     REVISION
+        "201802190000Z"
+ 
+     DESCRIPTION
+        "First MIB version."
+ 
+  ::= { opendigitalradio 1 }
+
+opendigitalradio          OBJECT IDENTIFIER ::=  { enterprises 51436 }
+
+
+----------------------------------
+-- General Info
+----------------------------------
+Version OBJECT-TYPE
+        SYNTAX  DisplayString
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                "ODR-DabMux version"
+        -- 1.3.6.1.4.1.51436.1.1
+        ::= { dabmux 1 }
+
+----------------------------------
+-- Services
+----------------------------------
+  
+servicesTable OBJECT-TYPE
+        SYNTAX  SEQUENCE OF servicesEntrySEQ
+        MAX-ACCESS not-accessible
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2
+        ::= { dabmux 2 }
+
+servicesEntry OBJECT-TYPE
+        SYNTAX  servicesEntrySEQ
+        MAX-ACCESS not-accessible
+        STATUS  current
+        DESCRIPTION
+                ""
+        INDEX {
+                serviceIndex }
+        -- 1.3.6.1.4.1.51436.1.2.1
+        ::= { servicesTable 1 }
+
+
+servicesEntrySEQ ::= SEQUENCE {
+        serviceIndex        INTEGER32,
+        serviceName         DisplayString,
+        serviceSID          DisplayString,
+        serviceLabel        DisplayString,
+        serviceShortLabel   DisplayString,
+        servicePTY          DisplayString,
+        serviceLanguage     DisplayString }
+  
+serviceIndex OBJECT-TYPE
+        SYNTAX  INTERGER32 (1..128)
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.1
+        ::= { servicesEntry 1 }
+
+serviceName OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..32))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.2
+        ::= { servicesEntry 2 }
+
+serviceSID OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..4))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.3
+        ::= { servicesEntry 3 }
+        
+serviceLabel OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..16))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.4
+        ::= { servicesEntry 4 }
+
+serviceShortLabel OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..8))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.5
+        ::= { servicesEntry 5 }
+
+servicePTY OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..2))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.6
+        ::= { servicesEntry 6 }
+
+serviceLanguage OBJECT-TYPE
+        SYNTAX  DisplayString (SIZE (1..2))
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.7
+        ::= { servicesEntry 7 }
+        
+----------------------------------
+-- Input
+----------------------------------
+  
+inputTable OBJECT-TYPE
+        SYNTAX  SEQUENCE OF inputEntrySEQ
+        MAX-ACCESS not-accessible
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.3
+        ::= { dabmux 3 }
+
+inputEntry OBJECT-TYPE
+        SYNTAX  servicesEntrySEQ
+        MAX-ACCESS not-accessible
+        STATUS  current
+        DESCRIPTION
+                ""
+        INDEX {
+                inputIndex }
+        -- 1.3.6.1.4.1.51436.1.3.1
+        ::= { inputTable 1 }
+
+
+inputEntrySEQ ::= SEQUENCE {
+        inputIndex        INTEGER32,
+        inputName         DisplayString,
+        inputLeftLevel    INTEGER32,
+        inputRightLevel   INTEGER32,
+        inputUnderRun     INTEGER32,
+        inputUnderRun     INTEGER32}
+  
+inputIndex OBJECT-TYPE
+        SYNTAX  INTERGER32 (1..128)
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.3.1.1
+        ::= { inputEntry 1 }
+
+inputName OBJECT-TYPE
+        SYNTAX  DisplayString
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.2
+        ::= { inputEntry 2 }
+
+inputLeftLevel OBJECT-TYPE
+        SYNTAX  INTEGER32
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.3
+        ::= { inputEntry 3 }
+        
+inputRightLevel OBJECT-TYPE
+        SYNTAX  INTEGER32
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.4
+        ::= { inputEntry 4 }
+        
+inputUnderRun OBJECT-TYPE
+        SYNTAX  INTEGER32
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.5
+        ::= { inputEntry 5 }
+        
+inputOverRun OBJECT-TYPE
+        SYNTAX  INTEGER32
+        MAX-ACCESS read-only
+        STATUS  current
+        DESCRIPTION
+                ""
+        -- 1.3.6.1.4.1.51436.1.2.1.6
+        ::= { inputEntry 6 }
+
+END

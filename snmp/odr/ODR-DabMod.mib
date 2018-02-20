@@ -1,0 +1,55 @@
+-- OPENDIGITALRADIO SMIV2 SPECIFICATION MIB
+
+OPENDIGITALRADIO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    MODULE-IDENTITY,OBJECT-TYPE,
+    NOTIFICATION-TYPE,enterprises,
+    Integer32,IpAddress                     FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION,DisplayString        FROM SNMPv2-TC;
+
+
+dabmod MODULE-IDENTITY
+     LAST-UPDATED "201802190000Z"
+     ORGANIZATION "OpenDigitalRadio"
+     CONTACT-INFO
+        "OpenDigitalRadio
+        opendigitalradio.org
+ 
+        Postal: OpenDigitalRadio
+        Rue de Lausanne 16
+        1201 Genève
+        Switzerland
+ 
+        EMail: info@opendigitalradio.org"
+ 
+     DESCRIPTION
+        "The MIB for ODR-DabMod"
+ 
+     REVISION
+        "201802190000Z"
+ 
+     DESCRIPTION
+        "First MIB version."
+ 
+  ::= { opendigitalradio 2 }
+
+opendigitalradio          OBJECT IDENTIFIER ::=  { enterprises 51436 }
+
+
+----------------------------------
+-- General Info
+----------------------------------
+Version OBJECT-TYPE
+	SYNTAX  INTEGER
+	MAX-ACCESS read-only
+	STATUS  current
+	DESCRIPTION
+		"ODR-DabMod version"
+	-- 1.3.6.1.4.1.51436.2.1
+	::= { dabmod 1 }
+
+
+
+
+END
