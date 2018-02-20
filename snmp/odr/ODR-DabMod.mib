@@ -40,7 +40,7 @@ opendigitalradio          OBJECT IDENTIFIER ::=  { enterprises 51436 }
 ----------------------------------
 -- General Info
 ----------------------------------
-Version OBJECT-TYPE
+version OBJECT-TYPE
 	SYNTAX  INTEGER
 	MAX-ACCESS read-only
 	STATUS  current

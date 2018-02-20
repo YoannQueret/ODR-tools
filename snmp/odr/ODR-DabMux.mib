@@ -40,7 +40,7 @@ opendigitalradio          OBJECT IDENTIFIER ::=  { enterprises 51436 }
 ----------------------------------
 -- General Info
 ----------------------------------
-Version OBJECT-TYPE
+version OBJECT-TYPE
         SYNTAX  DisplayString
         MAX-ACCESS read-only
         STATUS  current
@@ -84,7 +84,7 @@ servicesEntrySEQ ::= SEQUENCE {
         serviceLanguage     DisplayString }
   
 serviceIndex OBJECT-TYPE
-        SYNTAX  INTERGER32 (1..128)
+        SYNTAX  INTEGER32 (1..128)
         MAX-ACCESS read-only
         STATUS  current
         DESCRIPTION
@@ -180,7 +180,7 @@ inputEntrySEQ ::= SEQUENCE {
         inputUnderRun     INTEGER32}
   
 inputIndex OBJECT-TYPE
-        SYNTAX  INTERGER32 (1..128)
+        SYNTAX  INTEGER32 (1..128)
         MAX-ACCESS read-only
         STATUS  current
         DESCRIPTION
