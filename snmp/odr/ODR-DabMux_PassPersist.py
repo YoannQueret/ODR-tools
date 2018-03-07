@@ -51,8 +51,8 @@ def update():
         pp.add_int('10.1.6.'+str(idx), v['peak_left'])
         pp.add_int('10.1.7.'+str(idx), v['peak_right'])
         
-        #pp.add_int('10.1.8.'+str(idx), v['peak_left_long'])
-        #pp.add_int('10.1.9.'+str(idx), v['peak_right_long'])
+        pp.add_int('10.1.8.'+str(idx), v['peak_left_slow'])
+        pp.add_int('10.1.9.'+str(idx), v['peak_right_slow'])
         
         idx=idx+1
 
