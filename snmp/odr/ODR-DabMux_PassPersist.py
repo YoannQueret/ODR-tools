@@ -29,8 +29,8 @@ def update():
 
     # get version
     sock.send("info")
-    version = json.loads(sock.recv())
-    pp.add_str('1.0', version['service'])
+    info = json.loads(sock.recv())
+    pp.add_str('1.0', info['version'])
 
     # get inputTable values
     sock.send("values")
