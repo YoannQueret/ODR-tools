@@ -29,8 +29,8 @@ def update():
 
     # get version
     sock.send("info")
-    version = json.loads(sock.recv())
-    pp.add_str('1.0', version['service'])
+    info = json.loads(sock.recv())
+    pp.add_str('1.0', info['version'])
 
     # get inputTable values
     sock.send("values")
@@ -40,14 +40,19 @@ def update():
     for ident in values['values']:
         v = values['values'][ident]['inputstat']
         
-        pp.add_int('3.1.1.'+str(idx), int(idx))
-        pp.add_str('3.1.2.'+str(idx), str(ident))
+        pp.add_int('10.1.1.'+str(idx), int(idx))
+        pp.add_str('10.1.2.'+str(idx), str(ident))
         
-        pp.add_int('3.1.3.'+str(idx), v['peak_left'])
-        pp.add_int('3.1.4.'+str(idx), v['peak_right'])
+        pp.add_int('10.1.3.'+str(idx), v['num_underruns'])
+        pp.add_int('10.1.4.'+str(idx), v['num_overruns'])
         
-        pp.add_int('3.1.5.'+str(idx), v['num_underruns'])
-        pp.add_int('3.1.6.'+str(idx), v['num_overruns'])
+        pp.add_int('10.1.5.'+str(idx), v['state'][v['state'].find("(")+1:v['state'].find(")")])
+        
+        pp.add_int('10.1.6.'+str(idx), v['peak_left'])
+        pp.add_int('10.1.7.'+str(idx), v['peak_right'])
+        
+        #pp.add_int('10.1.8.'+str(idx), v['peak_left_long'])
+        #pp.add_int('10.1.9.'+str(idx), v['peak_right_long'])
         
         idx=idx+1
 
