@@ -76,13 +76,15 @@ inputEntry OBJECT-TYPE
 
 
 inputEntrySEQ ::= SEQUENCE {
-        inputIndex        INTEGER32,
-        inputName         DisplayString,
-        inputUnderRun     INTEGER32,
-        inputOversRun     INTEGER32,
-        inputState        INTEGER32,
-        inputLeftLevel    INTEGER32,
-        inputRightLevel   INTEGER32,
+        inputIndex            INTEGER32,
+        inputName             DisplayString,
+        inputUnderRun         INTEGER32,
+        inputOversRun         INTEGER32,
+        inputState            INTEGER32,
+        inputLeftLevel        INTEGER32,
+        inputRightLevel       INTEGER32,
+        inputLeftLevelSlow    INTEGER32,
+        inputRightLevelSlow   INTEGER32,
         }
   
 inputIndex OBJECT-TYPE
