@@ -35,10 +35,14 @@ def update():
     # get inputTable values
     sock.send("values")
     values = json.loads(sock.recv())
+    
+    pp.add_int('2.0', len(values['values']))
 
     idx=1
+    inputState = []
     for ident in values['values']:
         v = values['values'][ident]['inputstat']
+        inputState.append( v['state'][v['state'].find("(")+1:v['state'].find(")")] )
         
         pp.add_int('10.1.1.'+str(idx), int(idx))
         pp.add_str('10.1.2.'+str(idx), str(ident))
@@ -55,6 +59,7 @@ def update():
         pp.add_int('10.1.9.'+str(idx), v['peak_right_slow'])
         
         idx=idx+1
+    pp.add_int('3.0', min(inputState))
 
-pp = snmp.PassPersist('.1.3.6.1.4.1.51436.1')
+pp = snmp.PassPersist('.1.3.6.1.4.1.51436.1.1')
 pp.start(update, 30)
