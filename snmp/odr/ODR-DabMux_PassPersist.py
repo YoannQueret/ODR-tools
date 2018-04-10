@@ -10,35 +10,38 @@ import sys
 import json
 import zmq
 import os
+import argparse
 import snmp_passpersist as snmp
 
 ctx = zmq.Context()
 
-def connect():
+def connect(port):
     """Create a connection to the dabmux stats server
     returns: the socket"""
 
     sock = zmq.Socket(ctx, zmq.REQ)
-    sock.connect("tcp://localhost:12720")
+    sock.connect("tcp://localhost:%s" % (port))
 
     return sock
 
 
-def update():
-    sock = connect()
+def update(port):
+    sock = connect(port)
 
     # get version
     sock.send("info")
     info = json.loads(sock.recv())
     pp.add_str('1.0', info['version'])
-
+    
     # get inputTable values
     sock.send("values")
     values = json.loads(sock.recv())
 
     idx=1
+    inputState = []
     for ident in values['values']:
         v = values['values'][ident]['inputstat']
+        inputState.append( v['state'][v['state'].find("(")+1:v['state'].find(")")] )
         
         pp.add_int('10.1.1.'+str(idx), int(idx))
         pp.add_str('10.1.2.'+str(idx), str(ident))
@@ -55,6 +58,15 @@ def update():
         pp.add_int('10.1.9.'+str(idx), v['peak_right_slow'])
         
         idx=idx+1
+        
+    pp.add_int('2.0', min(inputState))
 
-pp = snmp.PassPersist('.1.3.6.1.4.1.51436.1')
-pp.start(update, 30)
+if __name__ == "__main__":
+    # Get configuration file in argument
+    parser = argparse.ArgumentParser(description='ODR-DabMux PassPersit')
+    parser.add_argument('-o','--oid', help='start oid (example: .1.3.6.1.4.1.51436.1.1)',required=True)
+    parser.add_argument('-p','--port', help='state port (example: 12720)',required=True)
+    cli_args = parser.parse_args()
+    
+    pp = snmp.PassPersist(cli_args.oid)
+    pp.start(update(cli_args.port), 30)
