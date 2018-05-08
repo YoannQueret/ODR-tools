@@ -13,6 +13,8 @@ import os
 import argparse
 import snmp_passpersist as snmp
 
+import syslog, sys, time, errno
+
 ctx = zmq.Context()
 
 def connect(port):
@@ -25,7 +27,7 @@ def connect(port):
     return sock
 
 
-def update():
+def update_data():
     sock = connect(cli_args.port)
 
     # get version
@@ -38,29 +40,35 @@ def update():
     sock.send("values")
     values = json.loads(sock.recv())
 
-    idx=1
     inputState = []
     for ident in values['values']:
         v = values['values'][ident]['inputstat']
         inputState.append( v['state'][v['state'].find("(")+1:v['state'].find(")")] )
+    pp.add_int('3.0', min(inputState))
+
+
+    idx=1
+    for ident in values['values']:
+        v = values['values'][ident]['inputstat']
+        syslog.syslog(syslog.LOG_INFO,"pp.add %s" % (int(idx)))
         
         pp.add_int('10.1.1.'+str(idx), int(idx))
         pp.add_str('10.1.2.'+str(idx), str(ident))
-        
+
         pp.add_int('10.1.3.'+str(idx), v['num_underruns'])
         pp.add_int('10.1.4.'+str(idx), v['num_overruns'])
-        
+
         pp.add_int('10.1.5.'+str(idx), v['state'][v['state'].find("(")+1:v['state'].find(")")])
-        
+
         pp.add_int('10.1.6.'+str(idx), v['peak_left'])
         pp.add_int('10.1.7.'+str(idx), v['peak_right'])
-        
+
         pp.add_int('10.1.8.'+str(idx), v['peak_left_slow'])
         pp.add_int('10.1.9.'+str(idx), v['peak_right_slow'])
-        
+            
         idx=idx+1
         
-    pp.add_int('3.0', min(inputState))
+    
 
 if __name__ == "__main__":
     # Get configuration file in argument
@@ -69,5 +77,24 @@ if __name__ == "__main__":
     parser.add_argument('-p','--port', help='state port (example: 12720)',required=True)
     cli_args = parser.parse_args()
     
-    pp = snmp.PassPersist(cli_args.oid)
-    pp.start(update, 30)
+    syslog.openlog(sys.argv[0],syslog.LOG_PID)
+    
+    try:
+        syslog.syslog(syslog.LOG_INFO,"Starting ODR-DabMux monitoring...")
+        pp = snmp.PassPersist(cli_args.oid)
+        pp.start(update_data, 30)
+    except KeyboardInterrupt:
+        print "Exiting on user request."
+        sys.exit(0)
+    except IOError, e:
+        if e.errno == errno.EPIPE:
+            syslog.syslog(syslog.LOG_INFO,"Snmpd had close the pipe, exiting...")
+            sys.exit(0)
+        else:
+            syslog.syslog(syslog.LOG_WARNING,"Updater thread as died: IOError: %s" % (e))
+    except Exception, e:
+        syslog.syslog(syslog.LOG_WARNING,"Main thread as died: %s: %s" % (e.__class__.__name__, e))
+    else:
+        syslog.syslog(syslog.LOG_WARNING,"Updater thread as died: %s" % (pp.error))
+        
+    
