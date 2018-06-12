@@ -1,0 +1,7 @@
+git clone https://github.com/AlbrechtL/welle.io
+cd welle.io
+git checkout next
+mkdir build
+cd build
+CFLAGS="-ffast-math" CXXFLAGS="-ffast-math"  cmake .. -DRTLSDR=ON -DBUILD_WELLE_IO=OFF
+make
