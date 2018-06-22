@@ -1,5 +1,5 @@
-apt install automake build-essential cmake
-apt install librtlsdr-dev
+apt install automake build-essential cmake 
+apt install librtlsdr-dev libmp3lame-dev libfaad-dev pkg-config libfftw3-dev
 
 git clone https://github.com/AlbrechtL/welle.io
 cd welle.io
