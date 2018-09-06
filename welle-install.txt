@@ -1,10 +1,11 @@
 apt install automake build-essential cmake 
 apt install librtlsdr-dev libmp3lame-dev libfaad-dev pkg-config libfftw3-dev
 
+cd /usr/src/
 git clone https://github.com/AlbrechtL/welle.io
 cd welle.io
 git checkout next
 mkdir build
 cd build
 CFLAGS="-ffast-math" CXXFLAGS="-ffast-math"  cmake .. -DRTLSDR=ON -DBUILD_WELLE_IO=OFF
-make
+make -j 4
