@@ -1,4 +1,4 @@
-apt install automake build-essential cmake 
+apt install automake build-essential cmake git
 apt install librtlsdr-dev libmp3lame-dev libfaad-dev pkg-config libfftw3-dev libmpg123-dev
 
 cd /usr/src/
