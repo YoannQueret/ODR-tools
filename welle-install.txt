@@ -5,8 +5,6 @@ cd /usr/src/
 git clone https://github.com/AlbrechtL/welle.io
 cd welle.io
 git checkout next
-# For Debian or Ubuntu 16.04
-git checkout 80f11f52c94adf0bf5add992a0ae1f3bb07e8917
 mkdir build
 cd build
 CFLAGS="-ffast-math" CXXFLAGS="-ffast-math"  cmake .. -DRTLSDR=ON -DBUILD_WELLE_IO=OFF
